@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../favicon.ico">-->
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+
+    <style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+    <title>Get location</title>
+
+    <script type="text/javascript">
+ 
+		function initGeolocation() {
+	 		if (navigator && navigator.geolocation) {
+		        navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {enableHighAccuracy:true});
+		    } else {
+		        console.log('Geolocation is not supported');
+		         alert("Geolocation is not supported by this browser");
+		    }
+	}
+	 
+	function errorCallback() {
+                  console.log('Geolocation failed');
+                  alert("Geolocation failed\nDefault values loaded");
+                  var loc, lat, long;
+				  // Start by creating a <form>
+				  loc = document.createElement('form');
+				  loc.action = '';
+				  loc.method = 'post';
+				  // Next create the <input>s in the form and give them names and values
+				  lat = document.createElement('input');
+				  lat.type = 'hidden';
+				  lat.name = 'lat';
+				  lat.value = 0;
+				  lon = document.createElement('input');
+				  lon.type = 'hidden';
+				  lon.name = 'lon';
+				  lon.value = 0;
+				  // Now put everything together...
+				  loc.appendChild(lat);
+				  loc.appendChild(lon);
+				  // ...and it to the DOM...
+				  document.getElementById('hidden_form_container').appendChild(loc);
+				  // ...and submit it
+				  loc.submit();
+	}
+		
+	function successCallback(position) {
+		  var loc, lat, long;
+		  // Start by creating a <form>
+		  loc = document.createElement('form');
+		  loc.action = '';
+		  loc.method = 'post';
+		  // Next create the <input>s in the form and give them names and values
+		  lat = document.createElement('input');
+		  lat.type = 'hidden';
+		  lat.name = 'lat';
+		  lat.value = position.coords.latitude;
+		  lon = document.createElement('input');
+		  lon.type = 'hidden';
+		  lon.name = 'lon';
+		  lon.value = position.coords.longitude;
+		  // Now put everything together...
+		  loc.appendChild(lat);
+		  loc.appendChild(lon);
+		  // ...and it to the DOM...
+		  document.getElementById('hidden_form_container').appendChild(loc);
+		  // ...and submit it
+		  loc.submit();
+	}
+	</script>
+  </head>
+
+<body onload="initGeolocation()">
+  {% for message in get_flashed_messages() %}
+          <div class="alert alert-success" role="alert">
+            {{ message }}
+          </div>
+  {% endfor %}
+    <div class="container">
+    
+
+	  <div id="hidden_form_container" style="display:none;"></div>
+                <div class="loader"></div>
+		<div>LOADING...</div>
+		
+		
+		
+    </div> <!-- /container -->
+
+  </body>
+</html>
